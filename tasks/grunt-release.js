@@ -136,8 +136,9 @@ module.exports = function(grunt){
         deferred.resolve();
       }
       else {
-        var success = shell.exec(cmd, {silent:true}).code === 0;
-
+        var result = shell.exec(cmd, {silent:false});
+        console.log(result.output);
+        var success = result.code === 0;
         if (success){
           grunt.log.ok(msg || cmd);
           deferred.resolve();
@@ -191,6 +192,7 @@ module.exports = function(grunt){
     }
 
     function push(){
+      run('git branch versioning && git checkout master && git merge versioning', 'branch detached');
       run('git push ' + options.remote + ' HEAD', 'pushed to remote');
     }
 
